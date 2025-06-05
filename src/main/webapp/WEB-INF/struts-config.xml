@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC 
+    "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN" 
+    "http://struts.apache.org/dtds/struts-config_1_3.dtd">
+
+<struts-config>
+    <form-beans>
+        <form-bean name="UserDto" type="br.edu.cba.ifmt.DTO.UserDto"/>
+    </form-beans>
+
+    <action-mappings>
+        <action path="/usuarios" 
+                type="br.edu.cba.ifmt.Controller.UserController"
+                name="UserDto"
+                parameter="method"
+                scope="request"
+                input="/resources/views/usuarios/index.jsp">
+            <forward name="index" path="/resources/views/usuarios/index.jsp"/>
+            <forward name="novo" path="/resources/views/usuarios/create.jsp"/>
+            <forward name="editar" path="/resources/views/usuarios/edit.jsp"/>
+        </action>
+        
+    </action-mappings>
+</struts-config>
