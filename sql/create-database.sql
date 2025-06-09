@@ -93,3 +93,13 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO "struts_jsp_hibernate";
 -- Permissões para sequências futuras no schema public
 ALTER DEFAULT PRIVILEGES IN SCHEMA public
 GRANT USAGE, SELECT, UPDATE ON SEQUENCES TO "struts_jsp_hibernate";
+
+CREATE SEQUENCE hibernate_sequence;
+
+SELECT relname FROM pg_class WHERE relkind = 'S' AND relname LIKE '%municipios%';
+
+SELECT relname FROM pg_class WHERE relkind = 'S' AND relname LIKE '%usuarios%';
+
+SELECT relname FROM pg_class WHERE relkind = 'S' AND relname LIKE '%hibernate_sequence%';
+
+
