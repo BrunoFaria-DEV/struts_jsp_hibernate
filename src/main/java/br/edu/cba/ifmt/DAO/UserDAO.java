@@ -1,109 +1,88 @@
 package br.edu.cba.ifmt.DAO;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.edu.cba.ifmt.Model.City;
 import br.edu.cba.ifmt.Model.User;
+import net.sf.hibernate.HibernateException;
+import net.sf.hibernate.Query;
+import net.sf.hibernate.Session;
+import net.sf.hibernate.SessionFactory;
+import net.sf.hibernate.cfg.Configuration; 
+import net.sf.hibernate.Transaction; 
 
 public class UserDAO {
-	private ContextConnection _contextConnection;
+	private SessionFactory _factory; 
 	
-	private static final String SELECT_ALL = 	"SELECT u.*, m.\"id\" AS \"m_id\", m.\"nome\" AS \"m_nome\" " +
-											    "FROM \"usuarios\" u " +
-											    "JOIN \"municipios\" m ON u.\"municipio_id\" = m.\"id\"";
-	private static final String SELECT_BY_ID = 	"SELECT u.*, m.\"id\" AS \"m_id\", m.\"nome\" AS \"m_nome\"  " +
-											    "FROM \"usuarios\" u " +
-											    "JOIN \"municipios\" m ON u.\"municipio_id\" = m.\"id\" " +
-											    "WHERE u.\"id\" = ?";
-	private static final String INSERT = 		"INSERT INTO \"usuarios\" (\"nome\", \"email\", \"CPF\", \"municipio_id\") VALUES (?, ?, ?, ?)";
-	private static final String UPDATE = 		"UPDATE \"usuarios\" SET \"nome\" = ?, \"email\" = ?, \"CPF\" = ?, \"municipio_id\" = ? WHERE \"id\" = ?";
-	private static final String DELETE = 		"DELETE FROM \"usuarios\" WHERE \"id\" = ?";
-	
-	public UserDAO() {
-		_contextConnection = new ContextConnection();
+	public UserDAO() throws Exception{
+	    _factory = new Configuration().configure().buildSessionFactory(); 
 	}
 	
-	public List<User> getAll() {
-		List<User> users = new ArrayList<>();		
+    public List<User> getAll() throws HibernateException {
+        List<User> users = null;
+        Session session = null;
 
-		try {
-			PreparedStatement statement = _contextConnection.connection().prepareStatement(SELECT_ALL);
-			ResultSet result = statement.executeQuery();
-			
-			while (result.next()) {
-				User user = new User();
-				user.setId(result.getInt("id"));
-				user.setNome(result.getString("nome"));
-				user.setEmail(result.getString("email"));
-				user.setCPF(result.getString("CPF"));
-				user.setCity(new City(result.getInt("m_id"), result.getString("m_nome")));
-				users.add(user);
-			}
-			statement.close();
-			result.close();
-			_contextConnection.connection().close();
-		} catch (Exception e) {
-            System.err.println("Erro em UserDAO.getAll(): " + e.getMessage());
-			e.printStackTrace();
-		}
-		return users;
-	}
+        try {
+            session = _factory.openSession();
+            Query query = session.createQuery("from User");
+            users = query.list();
+        } catch (HibernateException e) {
+            System.err.println("Erro em UserDAO.getAll() do Hibernate: " + e.getMessage());
+            throw new RuntimeException("Falha ao buscar todos os usuários", e);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return users != null ? users : new ArrayList<>();
+    }
 	
-	public User getById(int id) {
+	public User getById(int id) throws HibernateException {
 		User user = new User();		
-
+	    Session session = null;
+	    
 		try {
-			PreparedStatement statement = _contextConnection.connection().prepareStatement(SELECT_BY_ID);
-			statement.setInt(1, id);
+			session = _factory.openSession(); 
 			
-			ResultSet result = statement.executeQuery();
-			
-			if (result.next()) { 
-				user.setId(result.getInt("id"));
-				user.setNome(result.getString("nome"));
-				user.setEmail(result.getString("email"));
-				user.setCPF(result.getString("CPF"));
-				user.setCity(new City(result.getInt("m_id"), result.getString("m_nome")));
-			} else {
-				user = null; 
-			}
-
-			statement.close();
-			result.close();
-			_contextConnection.connection().close();
+			user = (User) session.get(User.class, Integer.valueOf(id));
 		} catch (Exception e) {
             System.err.println("Erro em UserDAO.getById(): " + e.getMessage());
 			e.printStackTrace();
-		}
+		} finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
 		return user;
 	}
 	
-	public boolean add(User user) {
+	public boolean add(User user) throws HibernateException {
 		boolean operation = false;
 		
+		Session session = _factory.openSession(); 
+		Transaction tx = null;
+		
 		try {
-			PreparedStatement statement = _contextConnection.connection().prepareStatement(INSERT);
-			statement.setString(1, user.getNome());
-			statement.setString(2, user.getEmail());
-			statement.setString(3, user.getCPF());
-			statement.setInt(4, user.getCity().getId());
+		    tx = session.beginTransaction();
+			session.save(user); 
+			tx.commit();
 			
-			operation = statement.executeUpdate() > 0;
-			
-			statement.close();
-			_contextConnection.connection().close(); 
+		 	operation = true; 
 		} catch (Exception e) {
-            System.err.println("Erro em UserDAO.add(): " + e.getMessage());
+			operation = false;
+	        System.err.println("Erro em UserDAO.add(): " + e.getMessage());
 			e.printStackTrace();
+		} finally {
+		    session.close();
 		}
 		return operation;
 	}
 	
-	public boolean update(int id, User user) {
+	public boolean update(int id, User user) throws HibernateException {
 		boolean operation = false;
+		
+		Session session = _factory.openSession(); 
+		Transaction tx = null;
 		
 		try {
 			User registeredUser = getById(id);
@@ -111,44 +90,46 @@ public class UserDAO {
 				return false;
 			}
 			
-			PreparedStatement statement = _contextConnection.connection().prepareStatement(UPDATE);
-			statement.setString(1, user.getNome());
-			statement.setString(2, user.getEmail());
-			statement.setString(3, user.getCPF());
-			statement.setInt(4, user.getCity().getId());
-			statement.setInt(5, id);
-			
-			operation = statement.executeUpdate() > 0;
-			
-			statement.close();
-			_contextConnection.connection().close(); 
+		    tx = session.beginTransaction();
+			session.update(user); 
+			tx.commit();
+		
+		 	operation = true; 
 		} catch (Exception e) {
+			operation = false;
             System.err.println("Erro em UserDAO.update(): " + e.getMessage());
 			e.printStackTrace();
+		} finally {
+		    session.close();
 		}
 		return operation;
 	}
 	
-	public boolean delete(int id) {
+	public boolean delete(int id) throws HibernateException {
 		boolean operation = false;
 		
+		Session session = _factory.openSession(); 
+		Transaction tx = null;
+		
 		try {
+			session = _factory.openSession();
+			
 			User registeredUser = getById(id);
 			if (registeredUser == null) {
 				return false;
 			}
 			
-			PreparedStatement statement = _contextConnection.connection().prepareStatement(DELETE);
-			statement.setInt(1, id);
+		    tx = session.beginTransaction();
+			session.delete(registeredUser); 
+			tx.commit();
 			
-			operation = statement.executeUpdate() > 0;
-			
-			statement.close();
-			_contextConnection.connection().close(); 
+		 	operation = true; 
 		} catch (Exception e) {
             System.err.println("Erro em UserDAO.delete(): " + e.getMessage());
 			e.printStackTrace();
-		}
+		}finally {
+			session.close();
+        }
 		return operation;
 	}
 }

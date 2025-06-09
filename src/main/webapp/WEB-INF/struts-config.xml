@@ -9,16 +9,71 @@
     </form-beans>
 
     <action-mappings>
-        <action path="/usuarios" 
-                type="br.edu.cba.ifmt.Controller.UserController"
-                name="UserDto"
-                parameter="method"
+        <action
+				path="/usuarios" 
+                type="br.edu.cba.ifmt.Controller.user.UserController"
                 scope="request"
                 input="/resources/views/usuarios/index.jsp">
             <forward name="index" path="/resources/views/usuarios/index.jsp"/>
-            <forward name="novo" path="/resources/views/usuarios/create.jsp"/>
-            <forward name="editar" path="/resources/views/usuarios/edit.jsp"/>
         </action>
         
+       	<action
+       			name="UserDto"
+				path="/usuariosNovo" 
+                type="br.edu.cba.ifmt.Controller.user.UserCreateController"
+                scope="request"
+                input="/resources/views/usuarios/create.jsp">
+            <forward name="create" path="/resources/views/usuarios/create.jsp"/>
+        </action>
+        
+       	<action
+				name="UserDto"
+				path="/usuariosSalvar" 
+                type="br.edu.cba.ifmt.Controller.user.UserStoreController"
+                scope="request"
+                input="/resources/views/usuarios/create.jsp">
+            <forward name="index" path="/usuarios.do" redirect="true"/>
+        </action>
+        
+        <action
+        		name="UserDto"
+				path="/usuariosEditar" 
+                type="br.edu.cba.ifmt.Controller.user.UserEditController"
+                scope="request"
+                input="/resources/views/usuarios/edit.jsp">
+            <forward name="edit" path="/resources/views/usuarios/edit.jsp"/>
+        </action>
+        
+        <action
+       			name="UserDto"
+				path="/usuariosAtualizar" 
+                type="br.edu.cba.ifmt.Controller.user.UserUpdateController"
+                scope="request"
+                input="/resources/views/usuarios/edit.jsp">
+            <forward name="index" path="/usuarios.do" redirect="true"/>
+        </action>
+        
+        <action
+				path="/usuariosExcluir" 
+                type="br.edu.cba.ifmt.Controller.user.UserDeleteController"
+                scope="request"
+                input="/resources/views/usuarios/index.jsp">
+            <forward name="index" path="/usuarios.do" redirect="true"/>
+        </action>
+        
+<!--         <action
+                name="UserDto"
+				path="/usuarios" 
+                type="br.edu.cba.ifmt.Controller.UserController"
+                scope="request"
+                parameter="method"
+                input="/resources/views/usuarios/create.jsp">
+            <forward name="inicio" path="/resources/views/usuarios/index.jsp" redirect="true"/>
+            <forward name="novo" path="/resources/views/usuarios/create.jsp"/>
+            <forward name="editar" path="/resources/views/usuarios/edit.jsp"/>
+        </action> -->
+        
     </action-mappings>
+    
+     <message-resources parameter="br.edu.cba.ifmt.Message.MessageBundle" />
 </struts-config>

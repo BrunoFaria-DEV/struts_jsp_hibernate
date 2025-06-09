@@ -12,11 +12,19 @@
 	<title>Usuarios</title>
 </head>
 <body>
+     <html:messages id="msg" message="true">
+          <c:if test="${not empty msg}">
+             <div class="alert-success">
+                 <c:out value="${msg}"/>
+             </div>
+          </c:if>
+     </html:messages>
+
 	<h1>Gestão de Usuários</h1>
 
 	<div class="header-with-button">
 		<h2>Lista de Usuários</h2>
-			<html:link page="/usuarios.do?method=novo" styleClass="button-link">Novo</html:link>
+			<html:link page="/usuariosNovo.do" styleClass="button-link">Novo</html:link>
 	</div>
 
 	<table>
@@ -34,13 +42,20 @@
 				<tr>
 					<td>${user.nome}</td>
 					<td>${user.email}</td>
-					<td>${user.CPF}</td>
+					<td>${user.cpf}</td>
 					<td>${user.city.nome}</td>
 					<td>
-						<a class="button-link" href="${pageContext.request.contextPath}/usuarios/editar/${user.id}">Editar</a>
+						<html:link page="/usuariosEditar.do" paramId="id" paramProperty="id" paramName="user" styleClass="button-link">Editar</html:link>
 						<form action="${pageContext.request.contextPath}/usuarios/excluir/${user.id}" method="POST" style="display:inline;">
 							<button type="submit" onclick="return confirm('Deseja realmente excluir?')">Excluir</button>
 						</form>
+				        <form action="<c:url value='/usuariosExcluir.do'/>" method="POST" style="display:inline; margin-left: 5px;">
+				            <input type="hidden" name="id" value="${user.id}">
+				            <button type="submit" class="btn btn-danger btn-sm" 
+				                    onclick="return confirm('Tem certeza que deseja excluir o usuário \'${user.nome}\'?');">
+				                Excluir
+				            </button>
+				        </form>
 					</td>
 				</tr>
 			</c:forEach>

@@ -16,39 +16,41 @@
     <div class="form-container">
         <div class="header-with-button space-between">
             <h2>Cadastrar Usuário</h2>
-			<html:link page="/usuarios.do?method=inicio" styleClass="button-link">Voltar</html:link>
+			<html:link page="/usuarios.do" styleClass="button-link">Voltar</html:link>
         </div>
 
-        <form action="${pageContext.request.contextPath}/usuarios/store" method="POST">
-            <div class="form-group">
-                <label for="nome">Nome:</label>
-                <input type="text" id="nome" name="nome" required>
-            </div>
-
-            <div class="form-group">
-                <label for="email">E-mail:</label>
-                <input type="email" id="email" name="email" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="cpf">CPF:</label>
-                <input type="text" id="cpf" name="cpf" required maxlength="14">
-            </div>
-            
-            <div class="form-group">
-                <label for="municipio_id">Município:</label>
-                <select id="municipio_id" name="municipio_id" required>
-                    <c:forEach var="city" items="${cities}">
-                        <option value="${city.id}">${city.nome}</option>
-                    </c:forEach>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <button type="submit" class="submit-button">Enviar</button>
-            </div>
-        </form>
-        
+  		<html:form action="usuariosSalvar.do" method="POST">
+		    <c:if test="${not empty errors}">
+		        <div class="alert-danger">${errors}</div>
+		    </c:if>
+		    
+		    <div class="form-group">
+		        <label for="nome">Nome:</label>
+		        <html:text property="nome" styleId="nome" styleClass="form-control" />
+		    </div>
+		
+		    <div class="form-group">
+		        <label for="email">E-mail:</label>
+		        <html:text property="email" styleId="email" styleClass="form-control" />
+		    </div>
+		    
+		    <div class="form-group">
+		        <label for="cpf">CPF:</label>
+		        <html:text property="cpf" styleId="cpf" styleClass="form-control" maxlength="14" />
+		    </div>
+		    
+		    <div class="form-group">
+		        <label for="municipio_id">Município:</label>
+		        <html:select property="city.id" styleId="municipio_id" styleClass="form-control">
+		            <html:option value="">Selecione um município</html:option>
+       				<html:optionsCollection name="cities" label="nome" value="id" />
+		        </html:select>
+		    </div>
+		
+		    <div class="form-group">
+		        <html:submit styleClass="submit-button">Enviar</html:submit>
+		    </div>
+        </html:form> 
     </div>
     
 </body>

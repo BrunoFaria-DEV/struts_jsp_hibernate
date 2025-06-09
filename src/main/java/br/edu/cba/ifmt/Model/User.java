@@ -4,23 +4,23 @@ public class User {
 	private int id;
 	private String nome;
 	private String email;
-	private String CPF;
+	private String cpf;
 	private City city;
 	
 	public User() {}
 	
-	public User(String nome, String email, String CPF, City city) {
+	public User(String nome, String email, String cpf, City city) {
 		this.nome = nome;
 		this.email = email;
-		this.CPF = CPF;
+		this.cpf = cpf;
 		this.city = city;
 	}
 	
-	public User(int id, String nome, String email, String CPF, City city) {
+	public User(int id, String nome, String email, String cpf, City city) {
 		this.id = id;
 		this.nome = nome;
 		this.email = email;
-		this.CPF = CPF;
+		this.cpf = cpf;
 		this.city = city;
 	}
 
@@ -36,9 +36,9 @@ public class User {
 
 	public void setEmail(String email) { this.email = email; }
 
-	public String getCPF() { return CPF; }
+	public String getCpf() { return cpf; }
 
-	public void setCPF(String cPF) { CPF = cPF;	}
+	public void setCpf(String cPF) { this.cpf = cPF;	}
 
 	public City getCity() { return city; }
 
