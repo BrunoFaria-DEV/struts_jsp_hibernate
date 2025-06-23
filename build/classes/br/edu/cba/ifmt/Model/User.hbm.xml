@@ -2,18 +2,20 @@
 <!DOCTYPE hibernate-mapping PUBLIC
     "-//Hibernate/Hibernate Mapping DTD 2.0//EN"
     "http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
-<!-- <!DOCTYPE hibernate-mapping SYSTEM "classpath://./dtd/hibernate-mapping-2.0.dtd"> -->
+<!-- <!DOCTYPE hibernate-mapping SYSTEM "dtd/hibernate-mapping-2.0.dtd"> -->
 
 <hibernate-mapping package="br.edu.cba.ifmt.Model">
 
     <class name="br.edu.cba.ifmt.Model.User" table="usuarios">
         <id name="id" column="id">
-            <generator class="native"/>
+            <generator class="sequence">
+            	<param name="sequence">usuarios_id_seq</param>
+            </generator>
         </id>
         
         <property name="nome" column="nome" type="string"/>
         <property name="email" column="email" type="string"/>
-        <property name="cpf" column="cpf" type="string"/>
+        <property name="cpf" column="`CPF`" type="string"/>
         
         <many-to-one name="city" class="br.edu.cba.ifmt.Model.City" column="municipio_id" not-null="true"/>
     </class>

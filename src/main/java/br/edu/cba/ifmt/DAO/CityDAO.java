@@ -1,69 +1,50 @@
 package br.edu.cba.ifmt.DAO;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
 import br.edu.cba.ifmt.Model.City;
+import net.sf.hibernate.HibernateException;
+import net.sf.hibernate.Session;
+import net.sf.hibernate.SessionFactory; 
 
-public class CityDAO {	
-	private ContextConnection _contextConnection;
-	
-	private static final String SELECT_ALL = "SELECT * FROM \"municipios\"";
-	private static final String SELECT_BY_ID = "SELECT * FROM \"municipios\" WHERE \"id\" = ?";
-	
-	public CityDAO() {
-		_contextConnection = new ContextConnection();
-	}
-	
-	public List<City> getAll() {
-		List<City> cities = new ArrayList<>();		
 
-		try {
-			PreparedStatement statement = _contextConnection.connection().prepareStatement(SELECT_ALL);
-			ResultSet result = statement.executeQuery();
-			
-			while (result.next()) {
-				City city = new City();
-				city.setId(result.getInt("id"));
-				city.setNome(result.getString("nome"));
-				cities.add(city);
-			}
-			
-			statement.close();
-			result.close();
-			_contextConnection.connection().close();
-		} catch (Exception e) {
-            System.err.println("Erro em CityDAO.getAll(): " + e.getMessage());
+public class CityDAO {
+	private SessionFactory _sessionFactory = HibernateUtil.getSessionFactory(); 
+	
+    public List<City> getAll() {
+        List<City> cities = new ArrayList<>();
+        Session session = SessionUtil.sessionOpen(_sessionFactory);
+           	
+        if (session == null)
+			return cities;
+		
+        try {
+        	cities = session.createQuery("from City").list();
+		} catch (HibernateException e) {
 			e.printStackTrace();
+		} finally {
+			SessionUtil.sessionClose(session);
 		}
-		return cities;
-	}
+        
+        return cities;
+    }
 	
-	public City getById(int id) {
+	public City getById(int id)  {
 		City city = new City();		
-
+	    Session session = SessionUtil.sessionOpen(_sessionFactory);
+	    
+	    if (session == null)
+	    	return city;
+	    
 		try {
-			PreparedStatement statement = _contextConnection.connection().prepareStatement(SELECT_BY_ID);
-			statement.setInt(1, id);
-			
-			ResultSet result = statement.executeQuery();
-			
-			if(result.next()) {			
-				city.setId(result.getInt("id"));
-				city.setNome(result.getString("nome"));
-			} else {
-				city = null; 
-			}
-
-			statement.close();
-			result.close();
-			_contextConnection.connection().close();
-		} catch (Exception e) {
-            System.err.println("Erro em CityDAO.getById(): " + e.getMessage());
+			city = (City) session.get(City.class, Integer.valueOf(id));
+		} catch (HibernateException e) {
 			e.printStackTrace();
-		}
+		} finally {
+			SessionUtil.sessionClose(session);
+        }
+		
 		return city;
 	}
 }

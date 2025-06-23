@@ -12,8 +12,7 @@
         <action
 				path="/usuarios" 
                 type="br.edu.cba.ifmt.Controller.user.UserController"
-                scope="request"
-                input="/resources/views/usuarios/index.jsp">
+                scope="request">
             <forward name="index" path="/resources/views/usuarios/index.jsp"/>
         </action>
         

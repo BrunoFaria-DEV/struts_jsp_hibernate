@@ -2,7 +2,7 @@
 <!DOCTYPE hibernate-configuration PUBLIC
     "-//Hibernate/Hibernate Configuration DTD 2.0//EN"
     "http://hibernate.sourceforge.net/hibernate-configuration-2.0.dtd">
-<!-- <!DOCTYPE hibernate-configuration SYSTEM "dtd/hibernate-configuration-2.0.dtd"> -->
+<!-- <!DOCTYPE hibernate-configuration SYSTEM "./dtd/hibernate-configuration-2.0.dtd"> -->
 
 <hibernate-configuration>
     <session-factory>
@@ -10,6 +10,11 @@
         <property name="hibernate.dialect">net.sf.hibernate.dialect.PostgreSQLDialect</property>
         <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
         <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/struts_jsp_hibernate</property>
+        
+<!--    <property name="hibernate.dialect">net.sf.hibernate.dialect.MySQLDialect</property>
+        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/struts_jsp_hibernate</property> -->
+        
         <property name="hibernate.connection.username">struts_jsp_hibernate</property>
         <property name="hibernate.connection.password">struts_jsp_hibernate</property>
 

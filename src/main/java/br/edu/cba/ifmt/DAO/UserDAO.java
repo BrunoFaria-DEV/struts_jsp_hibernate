@@ -15,7 +15,7 @@ public class UserDAO {
 	private SessionFactory _factory; 
 	
 	public UserDAO() throws Exception{
-	    _factory = new Configuration().configure().buildSessionFactory(); 
+	    _factory = new Configuration().configure().buildSessionFactory();
 	}
 	
     public List<User> getAll() throws HibernateException {

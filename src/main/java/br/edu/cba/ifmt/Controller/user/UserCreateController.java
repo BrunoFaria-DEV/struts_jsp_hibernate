@@ -12,11 +12,12 @@ import org.apache.struts.action.ActionMapping;
 
 import br.edu.cba.ifmt.DAO.CityDAO;
 import br.edu.cba.ifmt.Model.City;
+import net.sf.hibernate.HibernateException;
 
 public class UserCreateController extends Action{
 	private CityDAO _cityDAO;
 	
-	public UserCreateController() throws Exception{
+	public UserCreateController() {
 		_cityDAO = new CityDAO();
 	}
 	
