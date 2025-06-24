@@ -13,7 +13,7 @@
 				path="/usuarios" 
                 type="br.edu.cba.ifmt.Controller.user.UserController"
                 scope="request">
-            <forward name="index" path="/resources/views/usuarios/index.jsp"/>
+            <forward name="index" path="/WEB-INF/views/usuarios/index.jsp"/>
         </action>
         
        	<action
@@ -22,7 +22,7 @@
                 type="br.edu.cba.ifmt.Controller.user.UserCreateController"
                 scope="request"
                 input="/resources/views/usuarios/create.jsp">
-            <forward name="create" path="/resources/views/usuarios/create.jsp"/>
+            <forward name="create" path="/WEB-INF/views/usuarios/create.jsp"/>
         </action>
         
        	<action
@@ -40,7 +40,7 @@
                 type="br.edu.cba.ifmt.Controller.user.UserEditController"
                 scope="request"
                 input="/resources/views/usuarios/edit.jsp">
-            <forward name="edit" path="/resources/views/usuarios/edit.jsp"/>
+            <forward name="edit" path="/WEB-INF/views/usuarios/edit.jsp"/>
         </action>
         
         <action

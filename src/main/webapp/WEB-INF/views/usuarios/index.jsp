@@ -8,7 +8,7 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-  	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/styles/styles.css">
+  	<link rel="stylesheet" href="${pageContext.request.contextPath}/static/styles/styles.css">
 	<title>Usuarios</title>
 </head>
 <body>

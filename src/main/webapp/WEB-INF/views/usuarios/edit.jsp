@@ -9,7 +9,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Editar Usuário</title>
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/styles/styles.css">
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/static/styles/styles.css">
 </head>
 <body>
 
