@@ -3,9 +3,9 @@ package br.edu.cba.ifmt.Model;
 public class City {
 	private int id;
 	private String nome;
-	
+
 	public City() {}
-	
+
 	public City(int id, String nome) {
 		this.id = id;
 		this.nome = nome;
@@ -18,5 +18,5 @@ public class City {
 	public String getNome() { return nome; }
 
 	public void setNome(String nome) { this.nome = nome; }
-	
+
 }

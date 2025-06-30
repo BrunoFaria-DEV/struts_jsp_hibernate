@@ -8,18 +8,18 @@ public class UserDto extends ActionForm {
 	private String email;
 	private String cpf;
 	private CityDto city;
-	
+
     public UserDto() {
         this.city = new CityDto();
     }
-	
+
 	public UserDto(String nome, String email, String cpf, CityDto city) {
 		this.nome = nome;
 		this.email = email;
 		this.cpf = cpf;
 		this.city = city;
 	}
-	
+
 	public UserDto(int id, String nome, String email, String cpf, CityDto city) {
 		this.id = id;
 		this.nome = nome;

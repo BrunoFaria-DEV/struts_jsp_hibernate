@@ -6,19 +6,20 @@ import java.util.List;
 import br.edu.cba.ifmt.Model.City;
 import net.sf.hibernate.HibernateException;
 import net.sf.hibernate.Session;
-import net.sf.hibernate.SessionFactory; 
+import net.sf.hibernate.SessionFactory;
 
 
 public class CityDAO {
-	private SessionFactory _sessionFactory = HibernateUtil.getSessionFactory(); 
-	
+	private SessionFactory _sessionFactory = HibernateUtil.getSessionFactory();
+
     public List<City> getAll() {
         List<City> cities = new ArrayList<>();
         Session session = SessionUtil.sessionOpen(_sessionFactory);
-           	
-        if (session == null)
+
+        if (session == null) {
 			return cities;
-		
+		}
+
         try {
         	cities = session.createQuery("from City").list();
 		} catch (HibernateException e) {
@@ -26,17 +27,18 @@ public class CityDAO {
 		} finally {
 			SessionUtil.sessionClose(session);
 		}
-        
+
         return cities;
     }
-	
+
 	public City getById(int id)  {
-		City city = new City();		
+		City city = new City();
 	    Session session = SessionUtil.sessionOpen(_sessionFactory);
-	    
-	    if (session == null)
-	    	return city;
-	    
+
+	    if (session == null) {
+			return city;
+		}
+
 		try {
 			city = (City) session.get(City.class, Integer.valueOf(id));
 		} catch (HibernateException e) {
@@ -44,7 +46,7 @@ public class CityDAO {
 		} finally {
 			SessionUtil.sessionClose(session);
         }
-		
+
 		return city;
 	}
 }

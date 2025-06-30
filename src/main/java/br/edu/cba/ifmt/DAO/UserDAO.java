@@ -8,16 +8,16 @@ import net.sf.hibernate.HibernateException;
 import net.sf.hibernate.Query;
 import net.sf.hibernate.Session;
 import net.sf.hibernate.SessionFactory;
-import net.sf.hibernate.cfg.Configuration; 
-import net.sf.hibernate.Transaction; 
+import net.sf.hibernate.Transaction;
+import net.sf.hibernate.cfg.Configuration;
 
 public class UserDAO {
-	private SessionFactory _factory; 
-	
+	private SessionFactory _factory;
+
 	public UserDAO() throws Exception{
 	    _factory = new Configuration().configure().buildSessionFactory();
 	}
-	
+
     public List<User> getAll() throws HibernateException {
         List<User> users = null;
         Session session = null;
@@ -36,14 +36,14 @@ public class UserDAO {
         }
         return users != null ? users : new ArrayList<>();
     }
-	
+
 	public User getById(int id) throws HibernateException {
-		User user = new User();		
+		User user = new User();
 	    Session session = null;
-	    
+
 		try {
-			session = _factory.openSession(); 
-			
+			session = _factory.openSession();
+
 			user = (User) session.get(User.class, Integer.valueOf(id));
 		} catch (Exception e) {
             System.err.println("Erro em UserDAO.getById(): " + e.getMessage());
@@ -55,19 +55,19 @@ public class UserDAO {
         }
 		return user;
 	}
-	
+
 	public boolean add(User user) throws HibernateException {
 		boolean operation = false;
-		
-		Session session = _factory.openSession(); 
+
+		Session session = _factory.openSession();
 		Transaction tx = null;
-		
+
 		try {
 		    tx = session.beginTransaction();
-			session.save(user); 
+			session.save(user);
 			tx.commit();
-			
-		 	operation = true; 
+
+		 	operation = true;
 		} catch (Exception e) {
 			operation = false;
 	        System.err.println("Erro em UserDAO.add(): " + e.getMessage());
@@ -77,24 +77,24 @@ public class UserDAO {
 		}
 		return operation;
 	}
-	
+
 	public boolean update(int id, User user) throws HibernateException {
 		boolean operation = false;
-		
-		Session session = _factory.openSession(); 
+
+		Session session = _factory.openSession();
 		Transaction tx = null;
-		
+
 		try {
 			User registeredUser = getById(id);
 			if (registeredUser == null) {
 				return false;
 			}
-			
+
 		    tx = session.beginTransaction();
-			session.update(user); 
+			session.update(user);
 			tx.commit();
-		
-		 	operation = true; 
+
+		 	operation = true;
 		} catch (Exception e) {
 			operation = false;
             System.err.println("Erro em UserDAO.update(): " + e.getMessage());
@@ -104,26 +104,26 @@ public class UserDAO {
 		}
 		return operation;
 	}
-	
+
 	public boolean delete(int id) throws HibernateException {
 		boolean operation = false;
-		
-		Session session = _factory.openSession(); 
+
+		Session session = _factory.openSession();
 		Transaction tx = null;
-		
+
 		try {
 			session = _factory.openSession();
-			
+
 			User registeredUser = getById(id);
 			if (registeredUser == null) {
 				return false;
 			}
-			
+
 		    tx = session.beginTransaction();
-			session.delete(registeredUser); 
+			session.delete(registeredUser);
 			tx.commit();
-			
-		 	operation = true; 
+
+		 	operation = true;
 		} catch (Exception e) {
             System.err.println("Erro em UserDAO.delete(): " + e.getMessage());
 			e.printStackTrace();

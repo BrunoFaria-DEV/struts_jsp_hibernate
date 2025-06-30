@@ -18,22 +18,22 @@ public class UserDeleteController extends Action{
 	public UserDeleteController() throws Exception{
 		_userDAO = new UserDAO();
 	}
-	
+
 	@Override
 	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		int id = Integer.parseInt(request.getParameter("id"));
 		ActionMessages messages = new ActionMessages();
-		
+
 		User user = _userDAO.getById(id);
 		if (user == null) {
 			messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("user.delete.fail_user"));
 	        saveMessages(request.getSession(), messages);
 			return mapping.findForward("index");
 		}
-		
+
 		try {
 			boolean result = _userDAO.delete(id);
-			if (result == false) {
+			if (!result) {
 				messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("user.delete.fail"));
 		        saveMessages(request.getSession(), messages);
 				return mapping.findForward("index");

@@ -6,16 +6,16 @@ public class User {
 	private String email;
 	private String cpf;
 	private City city;
-	
+
 	public User() {}
-	
+
 	public User(String nome, String email, String cpf, City city) {
 		this.nome = nome;
 		this.email = email;
 		this.cpf = cpf;
 		this.city = city;
 	}
-	
+
 	public User(int id, String nome, String email, String cpf, City city) {
 		this.id = id;
 		this.nome = nome;

@@ -7,7 +7,9 @@
         
         <tlib-version>1.0</tlib-version>
         <short-name>hello</short-name>
-        <uri>/WEB-INF/taglibs/hello_world.tld</uri>
+<!--    <uri>/WEB-INF/taglibs/hello_world.tld</uri> --> <!-- uri como caminho -->
+<!--    <uri>http://BrunoFaria-DEV/hello_world</uri> --> <!-- uri como identificador -->
+	    <uri>BrunoFaria-DEV/hello_world</uri> <!-- uri como identificador sem o padrão http:// para teste de identificador tomcat 9 -->
         
  		<tag>
  			<name>helloWord</name>

@@ -5,9 +5,9 @@ import org.apache.struts.action.ActionForm;
 public class CityDto extends ActionForm{
 	private int id;
 	private String nome;
-	
+
 	public CityDto() {}
-	
+
 	public CityDto(int id, String nome) {
 		this.id = id;
 		this.nome = nome;
@@ -20,5 +20,5 @@ public class CityDto extends ActionForm{
 	public String getNome() { return nome; }
 
 	public void setNome(String nome) { this.nome = nome; }
-	
+
 }
